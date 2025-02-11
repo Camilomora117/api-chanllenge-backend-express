@@ -6,17 +6,20 @@ import TaskStatusEnum from '../utils/enums/taskEnums';
 import ITask from '../utils/interfaces/taskInterface';
 import getFormat from '../utils/data/formats';
 import isValidRowFormat from '../utils/data/validators';
+import { logger } from '../utils/data/logger';
 
 
 class TaskService {
     
     async getTaskById(taskId: string): Promise<any> {
+      logger.info('INIT SERVICE GET TASK');
       const task = await Task.findById(taskId);
       if (!task) throw new Error('Task not found');
       return task;
     }
 
     async createTask(nameFile: string): Promise<string> {
+      logger.info('INIT SERVICE CREATE TASK');
       const newTask = new Task({
         nameFile: nameFile,
         status: TaskStatusEnum.PENDING,
@@ -28,7 +31,7 @@ class TaskService {
     }
 
     async updateTask(taskId: string, updates: any): Promise<ITask | null> {
-      
+      logger.info('INIT SERVICE UPDATE TASK');
       if (!Types.ObjectId.isValid(taskId)) {
         throw new Error('Invalid task ID');
       }
@@ -47,6 +50,7 @@ class TaskService {
     }
   
     async uploadTask(taskId: string, file: any, format: string) {
+      logger.info('INIT SERVICE UPLOAD TASK');
       //Update State
       const updates = {
         status: TaskStatusEnum.PROCESSING,
