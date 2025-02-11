@@ -11,6 +11,7 @@ Este proyecto fue creado con Node 18.
 
 #### API Documentation
 
-<redoc spec-url="https://github.com/Camilomora117/api-chanllenge-backend-express/tree/main/src/utils/files/oas_api.json"></redoc>
+A continuacion se mostrara la documentacion de la API
 
-<script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"></script>
+👉 [View OpenAPI Documentation](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Camilomora117/api-chanllenge-backend-express/main/src/utils/files/oas_api.json)
+
