@@ -63,11 +63,11 @@ class TaskService {
       jsonData.forEach(async (row: any, index: number) => {
         const isValidRow: {valid: boolean, column: number} = isValidRowFormat(row, selectedFormat);
         if (isValidRow.valid) {
-          data.push({
+          data.push(this.cleanObject({
             name: row['Nombre'],
             age: row['Edad'],
             nums: row['Nums']
-          });
+          }));
           await this.updateTask(taskId, {
             data: data,
           });
@@ -83,6 +83,12 @@ class TaskService {
       await this.updateTask(taskId, {
         status: TaskStatusEnum.DONE,
       });
+    }
+
+    private cleanObject(obj: any) {
+      return Object.fromEntries(
+        Object.entries(obj).filter(([_, value]) => value !== undefined)
+      );
     }
 }
 

@@ -8,6 +8,10 @@ function isValidRowFormat(row: any, format: any): { valid: boolean; column: numb
     const key = keys[index];
     const value = row[key];
 
+    if (!required && value === undefined) {
+      return response;
+    }
+
     if (required && value === undefined) {
       return { valid: false, column: index };
     }
