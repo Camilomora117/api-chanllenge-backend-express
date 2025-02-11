@@ -6,7 +6,6 @@ import TaskStatusEnum from '../utils/enums/taskEnums';
 import ITask from '../utils/interfaces/taskInterface';
 import getFormat from '../utils/data/formats';
 import isValidRowFormat from '../utils/data/validators';
-import { json } from 'stream/consumers';
 
 
 class TaskService {
@@ -59,23 +58,30 @@ class TaskService {
 
       // Processing Data
       const data: any[] = [];
-      const errors: any[] = [];
+      const errors: {row: number, column: number}[] = [];
       const jsonData = ExcelParser.convertToJson(file.buffer);
-      jsonData.forEach((row: any) => {
-        if (isValidRowFormat(row, selectedFormat)) {
-          data.push(row);
+      jsonData.forEach(async (row: any, index: number) => {
+        const isValidRow: {valid: boolean, column: number} = isValidRowFormat(row, selectedFormat);
+        if (isValidRow.valid) {
+          data.push({
+            name: row['Nombre'],
+            age: row['Edad'],
+            nums: row['Nums']
+          });
+          await this.updateTask(taskId, {
+            data: data,
+          });
         } else {
-          errors.push(row);
+          errors.push({row: index, column: isValidRow.column});
+          await this.updateTask(taskId, {
+            errorList: errors,
+          });
         }
       });
-      console.log("Data", data)
-      console.log("Errores", errors);
 
-      // Update Task
+      // Update State Task
       await this.updateTask(taskId, {
         status: TaskStatusEnum.DONE,
-        data: data,
-        errorList: errors,
       });
     }
 }
