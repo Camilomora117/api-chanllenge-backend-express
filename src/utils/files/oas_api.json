@@ -1,0 +1,88 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Task API",
+      "version": "1.0.0",
+      "description": "API para gestionar tareas y subir archivos."
+    },
+    "servers": [
+      {
+        "url": "http://localhost:5000",
+        "description": "Servidor local"
+      }
+    ],
+    "paths": {
+      "/status/{taskId}": {
+        "get": {
+          "summary": "Obtener el estado de una tarea",
+          "description": "Devuelve el estado de una tarea en función del ID proporcionado.",
+          "parameters": [
+            {
+              "name": "taskId",
+              "in": "path",
+              "required": true,
+              "description": "ID de la tarea a consultar",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Estado de la tarea obtenido con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "taskId": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Solicitud incorrecta"
+            },
+            "404": {
+              "description": "Tarea no encontrada"
+            }
+          }
+        }
+      },
+      "/upload/{format}": {
+        "post": {
+          "summary": "Subir un archivo en formato xlsx",
+          "description": "Sube un archivo y lo procesa.",
+          "parameters": [
+            {
+              "name": "format",
+              "in": "path",
+              "required": true,
+              "description": "Tipo de formato con el que se desea procesar el archivo",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Archivo subido exitosamente"
+            },
+            "400": {
+              "description": "Error en la solicitud o formato inválido"
+            },
+            "500": {
+              "description": "Error interno del servidor"
+            }
+          }
+        }
+      }
+    }
+  }
+  
